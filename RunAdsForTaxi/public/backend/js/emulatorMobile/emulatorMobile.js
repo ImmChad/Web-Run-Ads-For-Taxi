@@ -16,7 +16,7 @@ window.addEventListener('load',(event)=>{
 
     requestDataMediaAdsLatest_withAppID(localStorage.getItem('app-ID'))
     loadBtnPlay(btnPlay)
-    loadBtnMuted(btnMute)
+    // loadBtnMuted(btnMute)
     loadBtnSkipImageBtn(btnSkipImage)
 })
 
@@ -36,7 +36,7 @@ function isShowViewLogin(isShow)
 {
     if(isShow)
     {
-        document.querySelector('.login').style.display = "block"
+        document.querySelector('.login').style.display = "flex"
     }
     else
     {
@@ -52,13 +52,25 @@ function loadViewMedia(photo_path,video_path,change_time)
     var btnSkipImage = document.querySelector('.btn-skip-image')
     img.src = photo_path
     video.src = video_path
+
     // video after 5 minute show image
     var num_loop = 1
     video.addEventListener('loadeddata',(event)=>{
-    num_loop = parseInt(5*60/event.currentTarget.duration)
-    console.log(num_loop);
+        var minutes_length =event.currentTarget.duration/60
+        if (minutes_length<1) {
+            num_loop = 0
+        }
+        else if(minutes_length<2)
+        {
+            num_loop = 2
+        }
+        else if(minutes_length<3)
+        {
+            num_loop = 1
+        }
     })
-   
+
+
     video.addEventListener('ended',(event)=>{
         
         if(loop<num_loop)
@@ -78,6 +90,7 @@ function loadViewMedia(photo_path,video_path,change_time)
             id_timeOut = setTimeout(()=>{
                 skipImage()
             },change_time * 60* 1000)
+            
         }
 
     })
@@ -190,22 +203,22 @@ function loadBtnSkipImageBtn(elementBtn)
         skipImage();
     })
 }
-function loadBtnMuted(elementBtn)
-{
-    var video = document.querySelector('video')
-    elementBtn.addEventListener('click',(event)=>{
-        var isMuted = event.currentTarget.getAttribute('is-muted')
-        if(isMuted ==='true')
-        {
-            video.muted =false 
-            event.currentTarget.setAttribute('is-muted',false)
-        }
-        else
-        {
-            video.muted =true  
-            event.currentTarget.setAttribute('is-muted',true)
-        }
+// function loadBtnMuted(elementBtn)
+// {
+//     var video = document.querySelector('video')
+//     elementBtn.addEventListener('click',(event)=>{
+//         var isMuted = event.currentTarget.getAttribute('is-muted')
+//         if(isMuted ==='true')
+//         {
+//             video.muted =false 
+//             event.currentTarget.setAttribute('is-muted',false)
+//         }
+//         else
+//         {
+//             video.muted =true  
+//             event.currentTarget.setAttribute('is-muted',true)
+//         }
 
-    })
-}
+//     })
+// }
     

@@ -40,15 +40,17 @@ class ViewAdsVideoController extends Controller
     }
     function getLatest_VideoAdsWorked_withCompanyID($company_id)
     {
+        // dump($company_id);
+        DB::enableQueryLog();
         $childGroup  = DashBoardController::getDataCompany_withCompanyID($company_id);
         $tmp = DB::table('company_video')
-        ->where(['company_id'=>$company_id,
-                    'is_active'=>1            
+        ->where(['company_id'=>$company_id          
                     ])
-            ->orWhere(['company_id'=>$childGroup->parent_id,
-            'is_active'=>1            
-        ])
+            ->orWhere(['company_id'=>$childGroup->parent_id  ] )
+            ->orWhere(['company_id'=>0  ] )
+            ->where(['is_active'=>1  ])        
         ->orderBy('id','DESC')->get()->first();
+        // dd( $tmp,$childGroup,DB::getQueryLog());
         return $tmp;
     }
     function getLatest_PhotoAdsWorked_withCompanyID($company_id)

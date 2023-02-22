@@ -10,9 +10,15 @@
     <link rel="stylesheet" href="{{asset('backend/css/emulatorMobile.css')}}">
 </head>
 <body>
-        <div class="login">
-            <form action="">
-                <input type="text" id="ipt-app-id">
+    <div class="container-android">
+        <div class="login" style="display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;">
+            <div style="font-size: 30px; font-weight: 900; padding: 0.5rem 0.5rem; display: flex; justify-content: center; align-items: flex-start; width: 100%;">
+                Enter App ID
+            </div>
+            <form  action="">
+                <input type="text" id="ipt-app-id" style="border-radius: 20px 0px 0px 20px;">
                 <input type="submit" value = "Submit" id="">
             </form>
         </div>
@@ -23,14 +29,15 @@
                 </video>
                 <img src="" alt="" srcset="">
             </div>
+            <div class="btn-skip-image">Skip Image</div>
             <div class="control">
                 <div is-paused= true class="btn-control btn-play"></div>
-                <div is-muted = false class="btn-control btn-mute"></div>
             </div>
         </div>
-        <div class="btn-skip-image">Skip Image</div>
+        
+    </div>
         <script src="{{asset('/backend/js/emulatorMobile/emulatorMobile.js')}}">
-            </script>
+        </script>
 </body>
 
 </html>

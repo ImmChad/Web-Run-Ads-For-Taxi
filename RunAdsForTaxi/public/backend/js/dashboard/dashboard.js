@@ -1,6 +1,6 @@
 
 
-
+// function choose time
 let chooseTime = document.querySelectorAll('.choose-time');
 chooseTime.forEach((item) => {
     item.addEventListener('click', (e) => {
@@ -14,6 +14,13 @@ chooseTime.forEach((item) => {
 
     });
 });
+
+// function change time 
+
+
+
+
+
 
 
 
