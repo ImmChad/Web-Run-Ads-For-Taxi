@@ -180,36 +180,25 @@ class CarController extends Controller
             return Redirect::to('/');
         }
     }
+    static function checkExistTaxi_forUpdate($taxi_id,$vehicle_num=-1,$tablet_id=-1,$app_id =-1)
+    {
 
-    static function addNewCar(Request $request) {
-        $id_ud = $request->id_ud;
-        $vehical_num = $request->vehical_num;
-
-        $listDataCar = CarController::getAllCar();
-        foreach($listDataCar as $subListDataCar) {
-            if($vehical_num == $subListDataCar->vehical_num) {
-                $resultMessage = "The vehical is has been used !";
-                return $resultMessage;
-            }
-        }
-
-
-        // dd($get_image);
-        if($id_ud != 0){
-            $resultCar = DB::table('taxi')->insert([
-                'vehical_num' => $request->vehical_num,
-                'company_id' => $request->company_id,
-                'id_ud' => $request->id_ud
-            ]);
-            return $resultCar;
-        } else {
-            $resultCar = DB::table('taxi')->insert([
-                'vehical_num' => $request->vehical_num,
-                'company_id' => $request->company_id
-            ]);
-            return $resultCar;
-        }
-        return Redirect::to('car/add-car');
+        $dataCar = DB::table('taxi')
+            ->where(function ($query) use ($vehicle_num,$tablet_id,$app_id)
+            {
+                $query->orWhereRaw("LOWER(TRIM(`vehicle_num`)) = '{$vehicle_num}'")
+                ->orWhereRaw( "LOWER(TRIM(`tablet_id`)) = '{$tablet_id}'")
+                ->orWhereRaw( "LOWER(TRIM(`app_id`)) = '{$app_id}'");
+            })->where('id','!=',$taxi_id)->get()->first();
+                
+        return isset($dataCar); 
+    }
+    static function checkExistTaxi_forAdd($vehicle_num=-1)
+    {
+        $dataCar = DB::table('taxi')
+        ->whereRaw("LOWER(TRIM(`vehicle_num`)) = '{$vehicle_num}'")
+        ->get()->first();
+        return isset($dataCar);
     }
     
     static function updateNewCar(Request $request) {
@@ -458,8 +447,10 @@ class CarController extends Controller
     static function updateTaxi(Request $request)
     {
         $result = 0;
-        $tmpDataTaxi = CarController::getDataCar_withVehicleNumber($request->value_vehicle_number);
-        if(!($tmpDataTaxi !==null && $tmpDataTaxi->id!=$request->value_taxi_id))
+        if(!CarController::checkExistTaxi_forUpdate($request->value_taxi_id,
+            trim(strtolower( $request->value_vehicle_number)),
+            trim(strtolower( $request->value_tablet_id))
+            ,trim(strtolower( $request->value_app_id))))
         {
             $result = DB::table('taxi')->where('id', $request->value_taxi_id)
             ->update([
@@ -477,7 +468,7 @@ class CarController extends Controller
         {
             return [
                 'isSuccess'=>$result,
-                'mess'=>'Vehicle Number Existed'
+                'mess'=>'Vehicle Number or Tablet ID or App ID Existed'
             ];
         }
 
@@ -506,7 +497,8 @@ class CarController extends Controller
         $result = 0;
         // check existed taxi
         // dd();
-        if(!(CarController::getDataCar_withVehicleNumber($request->value_vehicle_number)!==null))
+
+        if(!CarController::checkExistTaxi_forAdd(trim(strtolower( $request->value_vehicle_number))))
         {
             $time_int = strtotime(date("Y-m-d H:i:s"));
             $result = DB::table('taxi')

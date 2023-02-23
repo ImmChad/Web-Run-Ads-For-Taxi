@@ -28,7 +28,7 @@ btnAddVideo.addEventListener('click', (e) => {
     if(name_video_path != '' && video_name.trim() != '') {
 
         if(video_path[0].size >= 100000000) {
-            displayToast('The video file bigger 100mb !')
+            displayToast('The video file bigger 100MB !')
         } else {
             if(isImage(video_thumbnail) == false) {
                 video_thumbnail = '';

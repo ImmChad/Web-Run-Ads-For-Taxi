@@ -95,11 +95,11 @@
                             </div>
                             <div class="col-md-8" style="width: 100%; display: flex; justify-content: center; align-items: center;">
                                 <div class="input-ads" style="height: 40px; width: 100%; margin-top: 0px; margin: 0rem 2rem; display: flex;">
-                                    <div class="col-md-1" style="display: flex; justify-content: center; align-items: center; font-size: 25px;">
+                                    <div class="col-md-1 previous-date" style="display: flex; justify-content: center; align-items: center; font-size: 25px;">
                                         <i class="fa-solid fa-caret-left"></i>
                                     </div>
                                     <div class="col-md-10" style="display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 700;">
-                                        <span class="choose-time-to-filter active" start_date="<?php
+                                        <span class="choose-time-to-filter active"  get_time="1" start_date="<?php
                                                                                                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                                                                                                 date_default_timezone_get();
                                                                                                 $today = date('00:00:00 d/m/Y');
@@ -118,7 +118,7 @@
                                                 echo $today;
                                                 ?>
                                         </span>
-                                        <span class="choose-time-to-filter" start_date="<?php
+                                        <span class="choose-time-to-filter"  get_time="2" start_date="<?php
                                                                                 echo date("00:00:00 d/m/Y", strtotime('monday this week'));
                                                                                 ?>"
                                                                             end_date="<?php
@@ -132,12 +132,12 @@
                                             ?> - 
                                             <?php 
                                                 echo "From " ;
-                                                echo date("Y-m-d", strtotime('monday this week')), "\n";
+                                                echo date("Y/m/d", strtotime('monday this week')), "\n";
                                                 echo " to "  ;
-                                                echo date("Y-m-d", strtotime('sunday this week')), "\n";
+                                                echo date("Y/m/d", strtotime('sunday this week')), "\n";
                                             ?>
                                         </span>
-                                        <span class="choose-time-to-filter" start_date="<?php
+                                        <span class="choose-time-to-filter"  get_time="3" start_date="<?php
                                                                                 $dt = date('Y/m/d');
                                                                                 echo date("00:00:00 01/m/Y", strtotime($dt));
                                                                                 ?>"
@@ -151,10 +151,10 @@
                                             ?> - 
                                             <?php 
                                                 $dt = date('Y/m/d');
-                                                echo 'From: '. date("Y-m-01", strtotime($dt)).' to '. date("Y-m-t", strtotime($dt));
+                                                echo 'From: '. date("Y/m/01", strtotime($dt)).' to '. date("Y/m/t", strtotime($dt));
                                             ?>
                                         </span>
-                                        <span class="choose-time-to-filter"  start_date="<?php
+                                        <span class="choose-time-to-filter"  get_time="4"  start_date="<?php
                                                                                 $dt = date('Y/m/d');
                                                                                 echo date("00:00:00 01/01/Y", strtotime($dt));
                                                                                 ?>"
@@ -168,11 +168,11 @@
                                             ?> - 
                                             <?php 
                                                 $dt = date('Y/m/d');
-                                                echo 'From: '. date("Y-01-01", strtotime($dt)).' to '. date("Y-12-31", strtotime($dt));
+                                                echo 'From: '. date("Y/01/01", strtotime($dt)).' to '. date("Y/12/31", strtotime($dt));
                                             ?>
                                         </span>
                                     </div>
-                                    <div class="col-md-1" style="display: flex; justify-content: center; align-items: center; font-size: 25px;">
+                                    <div class="col-md-1 next-date" style="display: flex; justify-content: center; align-items: center; font-size: 25px;">
                                         <i class="fa-solid fa-caret-right"></i>
                                     </div>
                                 </div>
@@ -398,6 +398,10 @@
         }
         .choose-time-to-filter.active {
             display: block;
+        }
+
+        .previous-date, .next-date {
+            cursor: pointer;
         }
 
 
