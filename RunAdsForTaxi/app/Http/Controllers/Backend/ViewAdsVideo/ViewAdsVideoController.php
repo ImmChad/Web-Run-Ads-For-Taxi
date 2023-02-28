@@ -12,15 +12,39 @@ class ViewAdsVideoController extends Controller
     function getAllVideo_withAppID(Request $request)
     {
         $dataTaxi = ViewAdsVideoController::getDataTaxi_withAppID($request->app_id);
-        
+        if(!isset($dataTaxi))
+        {
+            return ["isLogin"=>null];
+        }
         $video_latest = ViewAdsVideoController::getLatest_VideoAdsWorked_withCompanyID($dataTaxi->company_id);
         $photo_latest = ViewAdsVideoController::getLatest_PhotoAdsWorked_withCompanyID($dataTaxi->company_id);
+        $video = ViewAdsVideoController::getDataVideo_withVideo_ID($video_latest->video_id);
+        $photo = ViewAdsVideoController::getDataPhoto_withPhoto_ID($photo_latest->photo_id);
+        
+        $photo->md5_encrypt = md5($photo->photo_path);
+        if(md5($video->video_path) == $request->video_md5_encrypt)
+        {
+            $video = null;
+            
+        }
+        else
+        {
+            $video->md5_encrypt = md5($video->video_path);
+        }
 
-        // dd($video_latest);
+        // if(md5($photo->photo_path) == $request->photo_md5_encrypt)
+        // {
+        //     $photo = null;
+            
+        // }
+        // else
+        // {
+        //     $photo->md5_encrypt = md5($photo->photo_path);
+        // }
 
         return [
-            'video'=>ViewAdsVideoController::getDataVideo_withVideo_ID($video_latest->video_id),
-            'photo'=>ViewAdsVideoController::getDataPhoto_withPhoto_ID($photo_latest->photo_id),
+            'video'=>$video,
+            'photo'=>$photo,
             'change_time'=>$video_latest->change_time,
             'isLogin'=>$request->app_id,
         ];
@@ -29,9 +53,12 @@ class ViewAdsVideoController extends Controller
     {
         $dataTaxi = ViewAdsVideoController:: getDataTaxi_withAppID($request->app_id);
         $video_latest = ViewAdsVideoController::getLatest_VideoAdsWorked_withCompanyID($dataTaxi->company_id);
-        // dd($dataTaxi,$video_latest);       
-        $result = DB::statement("insert into `taxi_video_statistics` (`taxi_id`, `company_video_id`, `human_type`, `human_time`) values ({$dataTaxi->id}, {$video_latest->id}, {$request->human_type}, STR_TO_DATE('{$request->human_time}','%H:%i:%s %d/%m/%Y'))");
-        return $result;
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $now = date("Y-m-d H:i:s");     
+        $result = DB::statement("insert into `taxi_video_statistics` (`taxi_id`, `company_video_id`, `human_type`, `human_time`) values ({$dataTaxi->id}, {$video_latest->id}, {$request->human_type},'{$now}')");
+        return [
+            'is_success'=>$result
+        ];
     }
     function getDataTaxi_withAppID($app_id)
     {

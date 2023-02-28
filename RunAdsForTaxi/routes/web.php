@@ -60,7 +60,6 @@ Route::group(array('prefix' => '/company'), function() {
  Route::group(array('prefix' => '/car'), function() {
     Route::get('/add-car', [CarController::class, 'showAddTaxi']);
     Route::get('/all-car', [CarController::class, 'showAllCar']);
-    Route::get('/all-car-flow-company', [CarController::class, 'showAllCarFlowCompany']);
     Route::get('/update-car/{id_car}', [CarController::class, 'showUpdateCar']);
 
     Route::post('/add-new-car', [CarController::class, 'addTaxi']);

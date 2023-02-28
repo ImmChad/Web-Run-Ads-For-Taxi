@@ -1,5 +1,6 @@
 var loop = 0
 var id_timeOut;
+const HOST_SERVER = "http://192.168.1.129:8000"
 localStorage.removeItem('app-ID');
 window.addEventListener('load',(event)=>{
 
@@ -58,7 +59,7 @@ function loadViewMedia(photo_path,video_path,change_time)
     video.addEventListener('loadeddata',(event)=>{
         var minutes_length =event.currentTarget.duration/60
         if (minutes_length<1) {
-            num_loop = 0
+            num_loop = 3
         }
         else if(minutes_length<2)
         {
@@ -163,7 +164,7 @@ function requestEventHuman(
                 console.log(data);
             }
         }
-        xhr.open('POST',`http://localhost:8000/api/view-ads-video/human-event`,false)
+        xhr.open('POST',`${HOST_SERVER}/api/view-ads-video/human-event`,false)
         // xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         xhr.send(form)
     }
